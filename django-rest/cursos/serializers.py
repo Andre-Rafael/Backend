@@ -29,6 +29,6 @@ class CursoSerializers(serializers.ModelSerializer):
             'id',
             'titulo',
             'url',
-            'criacao',
+            'atualizacao',
             'ativo',
         )

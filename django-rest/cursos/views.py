@@ -1,3 +1,38 @@
-from django.shortcuts import render
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 
-# Create your views here.
+from .models import Curso, Avaliacao
+from .serializers import CursoSerializers, AvaliacaoSerializers
+
+
+class CursoAPIView(APIView):
+    """
+    API de Cursos da Geek
+    """
+    def get(self, request):
+        cursos = Curso.objects.all()
+        serializer = CursoSerializers(cursos, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request):
+        serializer = CursoSerializers(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class AvaliacaoAPIView(APIView):
+    """
+    API de Avaliacao da Geek
+    """
+    def get(self, request):
+        avaliacoes = Avaliacao.objects.all()
+        serializer = AvaliacaoSerializers(avaliacoes, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = AvaliacaoSerializers(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
